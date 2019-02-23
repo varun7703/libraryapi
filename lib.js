@@ -136,4 +136,38 @@ app.post('/pass',(req,res)=>{
             }
             })
     })
+    app.post("/regcheck",(req,res)=>{
+        const username=req.body.username
+       const password=req.body.password
+       var sql= 'select * from password where (username) = ("'+username+'")';
+       con.query(sql,(err,result)=>{
+           if(result[0]==null){
+            var sql = 'insert into password (username,password) values ("'+username+'","'+password+'")';
+            con.query(sql,(err,result)=>{
+                if(err){
+                    console.log(err);
+                    res.json({
+                        success:false,
+                        status:400
+                    })
+                }
+                else{
+                    res.json({
+                        success:true,
+                        status:200
+                    })
+                    console.log("ho gaya bhai");
+                }
+            })
+           }
+           else{
+              
+               console.log(err);
+               res.json({
+                   success:false,
+                   status:500
+               })
+           }
+           })
+   })
 app.listen(process.env.PORT||3000);
